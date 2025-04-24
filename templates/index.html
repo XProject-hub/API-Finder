@@ -21,6 +21,7 @@
         <button type="submit">Search</button>
     </form>
     {% if search_results %}
+        <a href="/download" class="download-btn">⬇️ Download Results (JSON)</a>
         <h3>Found APIs:</h3>
         <ul>
             {% for link in search_results %}

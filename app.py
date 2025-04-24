@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, send_file
 from utils.validator import is_api_alive
 from search_engines.google import search_google_apis
 from search_engines.github import search_github_apis
@@ -26,5 +26,9 @@ def index():
 
     return render_template("index.html", api_info=api_info, search_results=search_results)
 
+@app.route("/download")
+def download_results():
+    return send_file("search_results.json", as_attachment=True)
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")
