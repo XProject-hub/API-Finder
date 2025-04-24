@@ -2,23 +2,32 @@
 <html>
 <head>
     <title>API Finder</title>
-    <style>
-        body { font-family: Arial; margin: 40px; background: #f5f5f5; }
-        footer { margin-top: 40px; font-size: 0.9em; color: #888; }
-    </style>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <h1>🔍 API Finder</h1>
     <form method="POST">
-        <input type="text" name="api_url" placeholder="Enter API URL..." style="width: 300px;">
+        <input type="text" name="api_url" placeholder="Enter API URL...">
         <button type="submit">Test API</button>
     </form>
-
     {% if api_info %}
         <h3>✅ Result:</h3>
         <pre>{{ api_info | tojson(indent=2) }}</pre>
     {% endif %}
-
+    <hr>
+    <h2>🌍 Search APIs Worldwide</h2>
+    <form method="POST">
+        <input type="text" name="search_query" placeholder="Enter keyword...">
+        <button type="submit">Search</button>
+    </form>
+    {% if search_results %}
+        <h3>Found APIs:</h3>
+        <ul>
+            {% for link in search_results %}
+            <li><a href="{{ link }}" target="_blank">{{ link }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
     <footer>developed by X Project</footer>
 </body>
 </html>
