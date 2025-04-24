@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>API Finder Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #121212;
+      color: #f1f1f1;
+    }
+    h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+    form {
+      margin-bottom: 20px;
+    }
+    input, select, button {
+      padding: 10px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      background-color: #1e1e1e;
+      color: #f1f1f1;
+    }
+    button {
+      background-color: #00c6ff;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #008cb8;
+    }
+    .api-card {
+      background-color: #1e1e1e;
+      border: 1px solid #333;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      transition: background 0.3s;
+    }
+    .api-card:hover {
+      background-color: #252525;
+    }
+    .openapi {
+      color: #0f0;
+      font-weight: bold;
+    }
+    a {
+      color: #00c6ff;
+      text-decoration: none;
+    }
+    .test-form {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #333;
+    }
+    textarea {
+      width: 100%;
+      height: 100px;
+      background-color: #1e1e1e;
+      border: 1px solid #444;
+      color: #f1f1f1;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .response-box {
+      white-space: pre-wrap;
+      background: #0f0f0f;
+      padding: 10px;
+      border: 1px solid #333;
+      border-radius: 5px;
+      margin-top: 10px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>📊 API Finder Dashboard</h1>
+
+  <form method="GET">
+    <input type="text" name="keyword" placeholder="Keyword" value="{{ request.args.get('keyword', '') }}">
+    <input type="text" name="category" placeholder="Category" value="{{ request.args.get('category', '') }}">
+    <input type="text" name="source" placeholder="Source" value="{{ request.args.get('source', '') }}">
+    <button type="submit">Filter</button>
+  </form>
+
+  <p>Showing {{ total }} APIs</p>
+
+  {% for api in apis %}
+    <div class="api-card">
+      <strong>🔗 <a href="{{ api.url }}" target="_blank">{{ api.url }}</a></strong><br>
+      ✅ Status: {{ api.status }} | {{ api.content_type }}<br>
+      📌 Category: {{ api.category }} | Keyword: {{ api.keyword }}<br>
+      🏷️ Source: {{ api.source if api.source else '—' }} {% if api.openapi %}<span class="openapi">[OpenAPI]</span>{% endif %}
+    </div>
+  {% endfor %}
+
+  <div class="test-form">
+    <h2>🔍 Test Any API Endpoint</h2>
+    <form method="POST" action="/test">
+      <input type="text" name="test_url" placeholder="Enter API URL to test..." style="width: 80%;">
+      <button type="submit">Test</button>
+    </form>
+
+    {% if result is defined %}
+      <div class="response-box">
+        <strong>🔄 Response:</strong><br>
+        {{ result }}
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>
